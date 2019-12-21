@@ -1,0 +1,117 @@
+﻿@model IEnumerable<CenedexUniversity.Model.StudentGrades>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Grades</a>
+
+            </li>
+        </ol>
+        <a asp-action="Create">Assign grade to student</a>
+        <div class="searchdiv ">
+            <b>Search By Name : </b>
+            @Html.TextBox("Search")<input type="submit" id="searchbtn" value="Search" /><br /><br />
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Final Grade %
+                            </th>
+                            <th>
+                                Final Grade (Letter)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Course)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Student)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchresults">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FinalPercentageGrade)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FinalLetterGrade)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Course.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.FirstName) @Html.DisplayFor(modelItem => item.Student.LastName)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                    <form asp-action="Delete"  onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="submit" value="Delete" /> |
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#searchbtn").click(function () {
+            var input = $("#Search").val();
+            var SetData = $("#searchresults");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/StudentGrades/Search?Input=" + input,
+                contentType: "html",
+                success: function (result) {
+                    console.log("result", result.status);
+                    if (result.status == 200) {
+                        if (result.length == 0) {
+                            SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                        } else {
+                            $.each(result.values, function (index, value) {
+                                console.log("Value - ", value);
+                                var Data = "<tr>" +
+                                    "<td>" + value.finalPercentageGrade + "</td>" +
+                                    "<td>" + value.finalLetterGrade + "</td>" +
+                                    "<td>" + value.course.name + "</td>" +
+                                    "<td>" + value.student.firstName +" " + value.student.lastName + "</td>" +
+
+                                    "</tr>";
+                                SetData.append(Data);
+                            });
+
+                        }
+                    }
+                    
+                },
+                error: function (error) {
+                    console.log("errr", error.statusText)
+                }
+            });
+        });
+    });
+</script>

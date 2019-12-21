@@ -1,0 +1,47 @@
+﻿@model CenedexUniversity.Model.Lecturer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Lecturers</a>
+            </li>
+            <li class="breadcrumb-item active">Details</li>
+        </ol>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+        <p>Courses Assigned</p>
+        @foreach (var course in ViewBag.courses)
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Course: 
+                </dt>
+                <dd class="col-sm-10">
+                    @course.Course.Name
+                </dd>
+
+            </dl>
+        }
+
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

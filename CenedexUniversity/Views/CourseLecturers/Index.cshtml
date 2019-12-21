@@ -1,0 +1,124 @@
+﻿@model IEnumerable<CenedexUniversity.Model.CourseLecturer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Courses and Lecturers Link</a>
+
+            </li>
+        </ol>
+        <div class="searchdiv ">
+            <b>Search By Name : </b>
+            @Html.TextBox("Search")<input type="submit" id="searchbtn" value="Search" /><br /><br />
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Course)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Lecturer)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Course.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Lecturer.Name)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#searchbtn").click(function () {
+            var input = $("#Search").val();
+            var SetData = $("#searchresults");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/CourseLecturers/Search?Input=" + input,
+                contentType: "html",
+                success: function (result) {
+                    console.log("result", result.status);
+                    if (result.status == 200) {
+                        if (result.length == 0) {
+                            SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                        } else {
+                            $.each(result.values, function (index, value) {
+                                console.log("Value - ", value);
+                                var Data = "<tr>" +
+                                    "<td>" + value.Name + "</td>" +
+                                 
+                                    "</tr>";
+                                SetData.append(Data);
+                            });
+
+                        }
+                    }
+                    //if (result.length == 0) {
+                    //    SetData.append('<tr style="color:red"><td colspan="3">No Match Data</td></tr>')
+                    //}
+                    //else {
+                    //    $.each(result, function (index, results) {
+                    //        console.log("Results - ", results)
+                    //        if (results.status == 200) {
+                    //            var value = results.values;
+                    //            var Data = "<tr>" +
+                    //                "<td>" + value.FirstName + "</td>" +
+                    //                "<td>" + value.LastName + "</td>" +
+                    //                "<td>" + value.DateOfBirth + "</td>" +
+                    //                "</tr>";
+                    //            SetData.append(Data);
+                    //        } else {
+                    //            console.log("Error - ", result.message)
+                    //        }
+
+                    //    });
+                    //}
+                }
+            });
+        });
+    });
+</script>

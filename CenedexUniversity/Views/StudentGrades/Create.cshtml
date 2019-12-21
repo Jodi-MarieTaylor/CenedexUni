@@ -1,0 +1,56 @@
+﻿@model CenedexUniversity.Model.StudentGrades
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Grades</a>
+
+            </li>
+            <li class="breadcrumb-item active">Assign Grades to Student</li>
+        </ol>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="StudentId" class="control-label">Student</label>
+                        <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CourseId" class="control-label">Course</label>
+                        <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FinalPercentageGrade" class="control-label">Final Grade (Percentage)</label>
+                        <input asp-for="FinalPercentageGrade" class="form-control" /> %
+                        <span asp-validation-for="FinalPercentageGrade" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FinalLetterGrade" class="control-label">Final Grade (Letter)</label>
+                        <input asp-for="FinalLetterGrade" class="form-control" />
+                        <span asp-validation-for="FinalLetterGrade" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

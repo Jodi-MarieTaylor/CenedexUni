@@ -1,0 +1,40 @@
+﻿@model CenedexUniversity.Model.CourseLecturer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Courses</a>
+                <a href="#">Create</a>
+
+            </li>
+            <li class="breadcrumb-item active">Create Course</li>
+        </ol>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Course)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Course.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Lecturer)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Lecturer.Name)
+            </dd>
+        </dl>
+    </div>
+
+</div>
+
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
